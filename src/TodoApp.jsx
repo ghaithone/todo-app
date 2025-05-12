@@ -19,6 +19,10 @@ function TodoApp() {
     );
   };
 
+  const deleteTask = idx => {
+    setTasks(tasks => tasks.filter((_, i) => i !== idx));
+  };
+
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-md border border-gray-100">
       <h1 className="text-2xl font-bold mb-4 text-center text-gray-800">Todo App</h1>
@@ -40,10 +44,17 @@ function TodoApp() {
         {tasks.map((task, idx) => (
           <li
             key={idx}
-            className={`bg-gray-50 px-3 py-2 rounded border border-gray-200 text-gray-800 cursor-pointer ${task.completed ? 'line-through' : ''}`}
-            onClick={() => toggleTask(idx)}
+            className={`bg-gray-50 px-3 py-2 rounded border border-gray-200 text-gray-800 flex items-center justify-between ${task.completed ? 'line-through' : ''}`}
           >
-            {task.title}
+            <span className="flex-1 cursor-pointer" onClick={() => toggleTask(idx)}>{task.title}</span>
+            <button
+              type="button"
+              className="ml-2 text-red-500 hover:text-red-700 px-2 py-1 rounded transition"
+              onClick={() => deleteTask(idx)}
+              aria-label="delete"
+            >
+              Delete
+            </button>
           </li>
         ))}
       </ul>

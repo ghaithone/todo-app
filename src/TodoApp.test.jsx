@@ -27,7 +27,21 @@ describe('TodoApp', () => {
     const task = screen.getByText('Read a book');
     fireEvent.click(task);
 
-    // Expect the completed task to have a line-through style
-    expect(task).toHaveClass('line-through');
+    // Expect the parent <li> to have a line-through style
+    expect(task.closest('li')).toHaveClass('line-through');
+  });
+
+  it('should remove a task when the delete button is clicked', () => {
+    render(<TodoApp />);
+    const input = screen.getByPlaceholderText(/add a new task/i);
+    const addButton = screen.getByRole('button', { name: /add/i });
+
+    fireEvent.change(input, { target: { value: 'Go jogging' } });
+    fireEvent.click(addButton);
+
+    const deleteButton = screen.getByRole('button', { name: /delete/i });
+    fireEvent.click(deleteButton);
+
+    expect(screen.queryByText('Go jogging')).not.toBeInTheDocument();
   });
 }); 
