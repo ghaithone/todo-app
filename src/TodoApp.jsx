@@ -6,9 +6,17 @@ function TodoApp() {
 
   const handleAdd = () => {
     if (input.trim()) {
-      setTasks([...tasks, { title: input }]);
+      setTasks([...tasks, { title: input, completed: false }]);
       setInput('');
     }
+  };
+
+  const toggleTask = idx => {
+    setTasks(tasks =>
+      tasks.map((task, i) =>
+        i === idx ? { ...task, completed: !task.completed } : task
+      )
+    );
   };
 
   return (
@@ -32,7 +40,8 @@ function TodoApp() {
         {tasks.map((task, idx) => (
           <li
             key={idx}
-            className="bg-gray-50 px-3 py-2 rounded border border-gray-200 text-gray-800"
+            className={`bg-gray-50 px-3 py-2 rounded border border-gray-200 text-gray-800 cursor-pointer ${task.completed ? 'line-through' : ''}`}
+            onClick={() => toggleTask(idx)}
           >
             {task.title}
           </li>
